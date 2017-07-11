@@ -45,10 +45,6 @@ model_directory = './models' #Directory to save trained model to.
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 
-
-# DIVERGE
-
-
 batch_size = 128 #Size of image batch to apply at each iteration.
 iterations = 500000 #Total number of iterations to use.
 
