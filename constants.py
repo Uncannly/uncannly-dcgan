@@ -1,0 +1,3 @@
+SAMPLE_DIRECTORY = './figs'
+MODEL_DIRECTORY = './models'
+Z_SIZE = 100
