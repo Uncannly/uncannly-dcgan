@@ -1,0 +1,5 @@
+.idea/
+figs/
+MNIST_data/
+venv/
+*.pyc
