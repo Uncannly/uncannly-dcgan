@@ -8,7 +8,7 @@ from save_images import save_images
 from setup_discriminators import setup_discriminators
 from setup_generator import setup_generator
 
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=False)
+mnist = input_data.read_data_sets("MNIST_data/")
 tf.reset_default_graph()
 
 generator_stuff = setup_generator()
@@ -27,7 +27,7 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for i in range(500000):
         zs = np.random.uniform(-1.0, 1.0, size=[BATCH_SIZE, Z_SIZE]).astype(np.float32)  # Generate a random z batch
-        xs, _ = mnist.train.next_batch(BATCH_SIZE)  # Draw a sample batch from MNIST dataset.
+        xs, _ = mnist.next_batch(BATCH_SIZE)  # Draw a sample batch from MNIST dataset.
         xs = (np.reshape(xs, [BATCH_SIZE, 28, 28, 1]) - 0.5) * 2.0  # Transform it to be between -1 and 1
         xs = np.lib.pad(xs, ((0, 0), (2, 2), (2, 2), (0, 0)), 'constant',
                         constant_values=(-1, -1))  # Pad the images so the are 32x32
