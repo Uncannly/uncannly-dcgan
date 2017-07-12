@@ -26,15 +26,15 @@ g_loss = discriminator_stuff['g_loss']
 
 NUM_ITERATIONS = 500000
 OUTPUT_WORDS_EVERY_N_ITERATIONS = 10
-SAVE_MODEL_EVERY_N_ITERATIONS = 100
+SAVE_MODEL_EVERY_N_ITERATIONS = 10
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     for i in range(NUM_ITERATIONS):
 
-        zs = generate_random_z_batch(BATCH_SIZE)
-        xs = data_sets.next_batch(BATCH_SIZE)
+        zs = generate_random_z_batch()
+        xs = data_sets.next_batch()
         xs = (np.reshape(xs, [BATCH_SIZE, DATA_SIZE_SQRT, DATA_SIZE_SQRT, 1]) - 0.5) * 2.0
         _, dLoss = sess.run([update_D, d_loss], feed_dict={z_in: zs, real_in: xs})
         _, gLoss = sess.run([update_G, g_loss], feed_dict={z_in: zs})
@@ -42,7 +42,7 @@ with tf.Session() as sess:
 
         if i % OUTPUT_WORDS_EVERY_N_ITERATIONS == 0:
             print "Gen Loss: " + str(gLoss) + " Disc Loss: " + str(dLoss)
-            output_words(sess, z_in, Gz, str(i), BATCH_SIZE)
+            output_words(sess, z_in, Gz, str(i))
 
         if i % SAVE_MODEL_EVERY_N_ITERATIONS == 0 and i != 0:
             if not os.path.exists(MODEL_DIRECTORY):

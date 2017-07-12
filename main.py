@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from constants import MODEL_DIRECTORY, BATCH_SIZE_SAMPLE
+from constants import MODEL_DIRECTORY
 from output_words import output_words
 from setup_generator import setup_generator
 
@@ -15,7 +15,7 @@ with tf.Session() as sess:
     ckpt = tf.train.get_checkpoint_state(MODEL_DIRECTORY)
 
     if not ckpt:
-        print 'Model not found! Have you not run train.py for 10 iterations yet?'
+        print 'Model not found! Have you run train.py for enough iterations for it to have saved a model yet?'
     else:
         tf.train.Saver().restore(sess, ckpt.model_checkpoint_path)
-        output_words(sess, z_in, Gz, "new", BATCH_SIZE_SAMPLE)
+        output_words(sess, z_in, Gz, "new")
