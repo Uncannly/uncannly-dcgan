@@ -1,6 +1,6 @@
+from __future__ import print_function
 import os
 import tensorflow as tf
-from __future__ import print_function
 
 import input_data
 from constants import MODEL_DIRECTORY
@@ -40,11 +40,11 @@ with tf.Session() as sess:
         _, g_loss_curr = sess.run([G_solver, g_loss], feed_dict={z_in: generate_random_z_batch()})
 
         if i % OUTPUT_WORDS_EVERY_N_ITERATIONS == 0:
-            print("Gen Loss: " + str(g_loss_curr) + " Disc Loss: " + str(d_loss_curr))
+            print("Gen Loss: " + str(g_loss_curr) + " Disc Loss: " + str(d_loss_curr), flush=True)
             output_words(sess, generator_stuff, str(i))
 
         if i % SAVE_MODEL_EVERY_N_ITERATIONS == 0 and i != 0:
             if not os.path.exists(MODEL_DIRECTORY):
                 os.makedirs(MODEL_DIRECTORY)
             tf.train.Saver().save(sess, MODEL_DIRECTORY + '/model-' + str(i) + '.cptk')
-            print("Saved Model")
+            print("Saved Model", flush=True)
