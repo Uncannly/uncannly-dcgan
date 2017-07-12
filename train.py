@@ -42,7 +42,7 @@ with tf.Session() as sess:
 
         if i % OUTPUT_WORDS_EVERY_N_ITERATIONS == 0:
             print "Gen Loss: " + str(gLoss) + " Disc Loss: " + str(dLoss)
-            output_words(sess, z_in, Gz, str(i))
+            output_words(sess, generator_stuff, str(i))
 
         if i % SAVE_MODEL_EVERY_N_ITERATIONS == 0 and i != 0:
             if not os.path.exists(MODEL_DIRECTORY):

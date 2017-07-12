@@ -5,9 +5,6 @@ from output_words import output_words
 from setup_generator import setup_generator
 
 generator_stuff = setup_generator()
-z_in = generator_stuff['z_in']
-initializer = generator_stuff['initializer']
-Gz = generator_stuff['Gz']
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
@@ -18,4 +15,4 @@ with tf.Session() as sess:
         print 'Model not found! Have you run train.py for enough iterations for it to have saved a model yet?'
     else:
         tf.train.Saver().restore(sess, ckpt.model_checkpoint_path)
-        output_words(sess, z_in, Gz, "new")
+        output_words(sess, generator_stuff, "new")

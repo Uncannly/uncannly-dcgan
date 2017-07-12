@@ -5,8 +5,8 @@ from generate_random_z_batch import generate_random_z_batch
 
 OUTPUT_SAMPLE_SIZE = 10
 
-def output_words(sess, z_in, Gz, name):
-    newZ = sess.run(Gz, feed_dict={z_in: generate_random_z_batch()})
+def output_words(sess, generator_stuff, name):
+    newZ = sess.run(generator_stuff['Gz'], feed_dict={generator_stuff['z_in']: generate_random_z_batch()})
 
     if not os.path.exists(SAMPLE_DIRECTORY):
         os.makedirs(SAMPLE_DIRECTORY)
