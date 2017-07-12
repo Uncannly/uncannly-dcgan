@@ -1,9 +1,8 @@
-import numpy as np
 import os
 import tensorflow as tf
 
 import input_data
-from constants import MODEL_DIRECTORY, BATCH_SIZE, DATA_SIZE_SQRT
+from constants import MODEL_DIRECTORY
 from generate_random_z_batch import generate_random_z_batch
 from output_words import output_words
 from setup_discriminators import setup_discriminators
@@ -13,35 +12,34 @@ data_sets = input_data.read_data_sets()
 tf.reset_default_graph()
 
 generator_stuff = setup_generator()
-z_in = generator_stuff['z_in']
-initializer = generator_stuff['initializer']
 Gz = generator_stuff['Gz']
+theta_G = generator_stuff['theta_G']
+z_in = generator_stuff['z_in']
 
-discriminator_stuff = setup_discriminators(initializer, Gz)
-update_D = discriminator_stuff['update_D']
-update_G = discriminator_stuff['update_G']
-real_in = discriminator_stuff['real_in']
+discriminator_stuff = setup_discriminators(Gz)
+theta_D = discriminator_stuff['theta_D']
 d_loss = discriminator_stuff['d_loss']
 g_loss = discriminator_stuff['g_loss']
+X = discriminator_stuff['X']
+
+D_solver = tf.train.AdamOptimizer().minimize(d_loss, var_list=theta_D)
+G_solver = tf.train.AdamOptimizer().minimize(g_loss, var_list=theta_G)
 
 NUM_ITERATIONS = 500000
 OUTPUT_WORDS_EVERY_N_ITERATIONS = 10
-SAVE_MODEL_EVERY_N_ITERATIONS = 10
+SAVE_MODEL_EVERY_N_ITERATIONS = 100
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     for i in range(NUM_ITERATIONS):
+        X_mb = data_sets.next_batch()
 
-        zs = generate_random_z_batch()
-        xs = data_sets.next_batch()
-        xs = (np.reshape(xs, [BATCH_SIZE, DATA_SIZE_SQRT, DATA_SIZE_SQRT, 1]) - 0.5) * 2.0
-        _, dLoss = sess.run([update_D, d_loss], feed_dict={z_in: zs, real_in: xs})
-        _, gLoss = sess.run([update_G, g_loss], feed_dict={z_in: zs})
-        _, gLoss = sess.run([update_G, g_loss], feed_dict={z_in: zs})
+        _, d_loss_curr = sess.run([D_solver, d_loss], feed_dict={X: X_mb, z_in: generate_random_z_batch()})
+        _, g_loss_curr = sess.run([G_solver, g_loss], feed_dict={z_in: generate_random_z_batch()})
 
         if i % OUTPUT_WORDS_EVERY_N_ITERATIONS == 0:
-            print "Gen Loss: " + str(gLoss) + " Disc Loss: " + str(dLoss)
+            print "Gen Loss: " + str(g_loss_curr) + " Disc Loss: " + str(d_loss_curr)
             output_words(sess, generator_stuff, str(i))
 
         if i % SAVE_MODEL_EVERY_N_ITERATIONS == 0 and i != 0:

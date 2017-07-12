@@ -1,31 +1,29 @@
 import tensorflow as tf
 
-from constants import DATA_SIZE_SQRT
 from discriminator import discriminator
+from xavier_init import xavier_init
 
 
-def setup_discriminators(initializer, Gz):
-    real_in = tf.placeholder(shape=[None, DATA_SIZE_SQRT, DATA_SIZE_SQRT, 1], dtype=tf.float32)
-    Dx = discriminator(real_in, initializer)
-    Dg = discriminator(Gz, initializer, reuse=True)
+def setup_discriminators(Gz):
+    X = tf.placeholder(tf.float32, shape=[None, 784], name='X')
 
-    d_loss = -tf.reduce_mean(tf.log(Dx) + tf.log(1. - Dg))
-    g_loss = -tf.reduce_mean(tf.log(Dg))
+    D_W1 = tf.Variable(xavier_init([784, 128]), name='D_W1')
+    D_b1 = tf.Variable(tf.zeros(shape=[128]), name='D_b1')
 
-    tvars = tf.trainable_variables()
+    D_W2 = tf.Variable(xavier_init([128, 1]), name='D_W2')
+    D_b2 = tf.Variable(tf.zeros(shape=[1]), name='D_b2')
 
-    trainerD = tf.train.AdamOptimizer(learning_rate=0.0002, beta1=0.5)
-    trainerG = tf.train.AdamOptimizer(learning_rate=0.0002, beta1=0.5)
-    d_grads = trainerD.compute_gradients(d_loss, tvars[9:])
-    g_grads = trainerG.compute_gradients(g_loss, tvars[0:9])
+    theta_D = [D_W1, D_W2, D_b1, D_b2]
 
-    update_D = trainerD.apply_gradients(d_grads)
-    update_G = trainerG.apply_gradients(g_grads)
+    D_real, D_logit_real = discriminator(X, D_W1, D_W2, D_b1, D_b2)
+    D_fake, D_logit_fake = discriminator(Gz, D_W1, D_W2, D_b1, D_b2)
+
+    d_loss = -tf.reduce_mean(tf.log(D_real) + tf.log(1. - D_fake))
+    g_loss = -tf.reduce_mean(tf.log(D_fake))
 
     return {
-        'update_D': update_D,
-        'update_G': update_G,
-        'real_in': real_in,
+        'theta_D': theta_D,
         'd_loss': d_loss,
-        'g_loss': g_loss
+        'g_loss': g_loss,
+        'X': X,
     }

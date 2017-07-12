@@ -1,16 +1,22 @@
 import tensorflow as tf
 
-from constants import Z_SIZE
 from generator import generator
+from xavier_init import xavier_init
 
 
 def setup_generator():
-    initializer = tf.truncated_normal_initializer(stddev=0.02)
-    z_in = tf.placeholder(shape=[None, Z_SIZE], dtype=tf.float32)
-    Gz = generator(z_in, initializer)
+    z_in = tf.placeholder(tf.float32, shape=[None, 100], name='z_in')
+
+    G_W1 = tf.Variable(xavier_init([100, 128]), name='G_W1')
+    G_b1 = tf.Variable(tf.zeros(shape=[128]), name='G_b1')
+
+    G_W2 = tf.Variable(xavier_init([128, 784]), name='G_W2')
+    G_b2 = tf.Variable(tf.zeros(shape=[784]), name='G_b2')
+
+    theta_G = [G_W1, G_W2, G_b1, G_b2]
 
     return {
-        'Gz': Gz,
+        'Gz': generator(z_in, G_W1, G_W2, G_b1, G_b2),
+        'theta_G': theta_G,
         'z_in': z_in,
-        'initializer': initializer
     }
