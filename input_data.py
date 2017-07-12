@@ -8,7 +8,7 @@ NUM_EXAMPLES = 500
 class DataSet(object):
     def __init__(self, words, labels):
         self._num_examples = words.shape[0]
-        self._words = words.reshape(words.shape[0], words.shape[1] * words.shape[2])
+        self._words = words
         self._labels = labels
         self._index_in_epoch = 0
 
@@ -32,7 +32,7 @@ class DataSet(object):
 
 
 def read_data_sets():
-    train_words = np.array([[[[0]] * DATA_SIZE]] * NUM_EXAMPLES)
-    train_labels = np.array([0] * NUM_EXAMPLES)
+    words = np.array([[0] * DATA_SIZE] * NUM_EXAMPLES)
+    labels = np.array([0] * NUM_EXAMPLES)
 
-    return DataSet(train_words, train_labels)
+    return DataSet(words, labels)
