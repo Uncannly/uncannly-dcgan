@@ -2,7 +2,7 @@ import math
 import numpy as np
 import os
 
-from constants import SAMPLE_DIRECTORY, BATCH_SIZE_SAMPLE
+from constants import SAMPLE_DIRECTORY, BATCH_SIZE_SAMPLE, DATA_SIZE_SQRT
 from generate_random_z_batch import generate_random_z_batch
 from save_images import save_images
 
@@ -17,7 +17,7 @@ def output_words(sess, z_in, Gz, name, batch_size):
     save_images(
         np.reshape(
             newZ[0:BATCH_SIZE_SAMPLE],
-            [BATCH_SIZE_SAMPLE, 32, 32]
+            [BATCH_SIZE_SAMPLE, DATA_SIZE_SQRT, DATA_SIZE_SQRT]
         ),
         [square_root_batch, square_root_batch],
         SAMPLE_DIRECTORY + '/' + name + '.png'

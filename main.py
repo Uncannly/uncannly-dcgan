@@ -1,8 +1,8 @@
 import tensorflow as tf
 
 from constants import MODEL_DIRECTORY, BATCH_SIZE_SAMPLE
-from setup_generator import setup_generator
 from output_words import output_words
+from setup_generator import setup_generator
 
 generator_stuff = setup_generator()
 z_in = generator_stuff['z_in']
