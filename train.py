@@ -3,11 +3,11 @@ import os
 import tensorflow as tf
 
 import input_data
-from constants import SAMPLE_DIRECTORY, MODEL_DIRECTORY, Z_SIZE, BATCH_SIZE
-from save_images import save_images
+from constants import MODEL_DIRECTORY, BATCH_SIZE
 from setup_discriminators import setup_discriminators
 from setup_generator import setup_generator
 from generate_random_z_batch import generate_random_z_batch
+from output_words import output_words
 
 data_sets = input_data.read_data_sets()
 tf.reset_default_graph()
@@ -37,12 +37,7 @@ with tf.Session() as sess:
 
         if i % 10 == 0:
             print "Gen Loss: " + str(gLoss) + " Disc Loss: " + str(dLoss)
-            z2 = generate_random_z_batch(BATCH_SIZE)
-            newZ = sess.run(Gz, feed_dict={z_in: z2})  # Use new z to get sample images from generator.
-            if not os.path.exists(SAMPLE_DIRECTORY):
-                os.makedirs(SAMPLE_DIRECTORY)
-
-            save_images(np.reshape(newZ[0:36], [36, 32, 32]), [6, 6], SAMPLE_DIRECTORY + '/fig' + str(i) + '.png')
+            output_words(sess, z_in, Gz, str(i), BATCH_SIZE)
 
         if i % 100 == 0 and i != 0:
             if not os.path.exists(MODEL_DIRECTORY):
