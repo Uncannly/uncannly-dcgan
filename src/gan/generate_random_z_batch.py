@@ -1,6 +1,6 @@
 import numpy as np
 
-from constants import Z_SIZE, BATCH_SIZE
+from src.constants import Z_SIZE, BATCH_SIZE
 
 
 def generate_random_z_batch():

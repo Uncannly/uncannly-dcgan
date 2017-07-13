@@ -1,9 +1,9 @@
 import tensorflow as tf
 
-from constants import MODEL_DIRECTORY
-from output_words import output_words
-from setup_generator import setup_generator
-from cross_platform_print import cross_platform_print
+from src.constants import MODEL_DIRECTORY
+from src.gan.setup_generator import setup_generator
+from src.i_o.cross_platform_print import cross_platform_print
+from src.i_o.output_words import output_words
 
 generator_stuff = setup_generator()
 

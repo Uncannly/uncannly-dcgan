@@ -1,7 +1,7 @@
 import os
 
-from constants import SAMPLE_DIRECTORY
-from generate_random_z_batch import generate_random_z_batch
+from src.constants import SAMPLE_DIRECTORY
+from src.gan.generate_random_z_batch import generate_random_z_batch
 
 OUTPUT_SAMPLE_SIZE = 10
 

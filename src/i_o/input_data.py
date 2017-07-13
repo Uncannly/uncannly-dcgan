@@ -1,6 +1,6 @@
 import numpy as np
 
-from constants import DATA_SIZE, BATCH_SIZE
+from src.constants import DATA_SIZE, BATCH_SIZE
 
 NUM_EXAMPLES = 500
 

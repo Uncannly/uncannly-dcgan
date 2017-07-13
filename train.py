@@ -1,13 +1,13 @@
 import os
 import tensorflow as tf
 
-import input_data
-from constants import MODEL_DIRECTORY
-from generate_random_z_batch import generate_random_z_batch
-from output_words import output_words
-from setup_discriminators import setup_discriminators
-from setup_generator import setup_generator
-from cross_platform_print import cross_platform_print
+from src.constants import MODEL_DIRECTORY
+from src.gan.generate_random_z_batch import generate_random_z_batch
+from src.gan.setup_discriminators import setup_discriminators
+from src.gan.setup_generator import setup_generator
+from src.i_o import input_data
+from src.i_o.cross_platform_print import cross_platform_print
+from src.i_o.output_words import output_words
 
 data_sets = input_data.read_data_sets()
 tf.reset_default_graph()
