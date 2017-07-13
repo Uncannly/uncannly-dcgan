@@ -13,7 +13,8 @@ with tf.Session() as sess:
     ckpt = tf.train.get_checkpoint_state(MODEL_DIRECTORY)
 
     if not ckpt:
-        cross_platform_print('Model not found! Have you run train.py for enough iterations for it to have saved a model yet?')
+        cross_platform_print(
+            'Model not found! Have you run train.py for enough iterations for it to have saved a model yet?')
     else:
         tf.train.Saver().restore(sess, ckpt.model_checkpoint_path)
         output_words(sess, generator_stuff, "new")
