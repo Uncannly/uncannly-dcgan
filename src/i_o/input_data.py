@@ -1,15 +1,15 @@
 import numpy as np
 
-from src.constants import DATA_SIZE, BATCH_SIZE
+from src.constants import BATCH_SIZE
+from process_words import process_words
 
 NUM_EXAMPLES = 500
 
 
 class DataSet(object):
-    def __init__(self, words, labels):
+    def __init__(self, words):
         self._num_examples = words.shape[0]
         self._words = words
-        self._labels = labels
         self._index_in_epoch = 0
 
     def next_batch(self):
@@ -21,7 +21,6 @@ class DataSet(object):
             np.random.shuffle(perm)
 
             self._words = self._words[perm]
-            self._labels = self._labels[perm]
 
             start = 0
             self._index_in_epoch = BATCH_SIZE
@@ -32,7 +31,4 @@ class DataSet(object):
 
 
 def read_data_sets():
-    words = np.array([[0] * DATA_SIZE] * NUM_EXAMPLES)
-    labels = np.array([0] * NUM_EXAMPLES)
-
-    return DataSet(words, labels)
+    return DataSet(np.array(process_words()))

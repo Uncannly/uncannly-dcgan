@@ -28,7 +28,7 @@ G_solver = tf.train.AdamOptimizer().minimize(g_loss, var_list=theta_G)
 
 NUM_ITERATIONS = 500000
 OUTPUT_WORDS_EVERY_N_ITERATIONS = 10
-SAVE_MODEL_EVERY_N_ITERATIONS = 100
+SAVE_MODEL_EVERY_N_ITERATIONS = 1000
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
