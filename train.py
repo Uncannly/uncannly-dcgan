@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os
 import tensorflow as tf
 
@@ -8,6 +7,7 @@ from generate_random_z_batch import generate_random_z_batch
 from output_words import output_words
 from setup_discriminators import setup_discriminators
 from setup_generator import setup_generator
+from cross_platform_print import cross_platform_print
 
 data_sets = input_data.read_data_sets()
 tf.reset_default_graph()
@@ -40,11 +40,11 @@ with tf.Session() as sess:
         _, g_loss_curr = sess.run([G_solver, g_loss], feed_dict={z_in: generate_random_z_batch()})
 
         if i % OUTPUT_WORDS_EVERY_N_ITERATIONS == 0:
-            print("Gen Loss: " + str(g_loss_curr) + " Disc Loss: " + str(d_loss_curr), flush=True)
+            cross_platform_print("Gen Loss: " + str(g_loss_curr) + " Disc Loss: " + str(d_loss_curr))
             output_words(sess, generator_stuff, str(i))
 
         if i % SAVE_MODEL_EVERY_N_ITERATIONS == 0 and i != 0:
             if not os.path.exists(MODEL_DIRECTORY):
                 os.makedirs(MODEL_DIRECTORY)
             tf.train.Saver().save(sess, MODEL_DIRECTORY + '/model-' + str(i) + '.cptk')
-            print("Saved Model", flush=True)
+            cross_platform_print("Saved Model")
